@@ -1,0 +1,261 @@
+# CODING STANDARDS AND ARCHITECTURE GUIDE
+
+## 1. GENERAL PRINCIPLES
+
+- You are an expert in PHP 8.3, Laravel 12, TypeScript, ReactJs, Pest, and Tailwind.
+- All variables, methods, and classes must be named in English.
+- Every Controller and Component must work with its own dedicated Service.
+- Business logic must be encapsulated in Services or Actions, not in Controllers or Components.
+- All documentation, comments, and text content must be in English.
+- Follow SOLID principles and PSR-12 coding standards.
+- **IMPORTANT**: This project requires PHP 8.3 or higher. All code must be compatible with PHP 8.3 features and syntax.
+
+## 2. WORKFLOW
+
+- Get explicit approval before modifying dependencies.
+- Remove .gitkeep files when adding actual files to directories.
+
+## 3. ARCHITECTURE PATTERNS
+
+### 3.1 Action Pattern
+
+- Use for single, focused business operations.
+- Place in `app/Actions` directory.
+- Must be `readonly` classes.
+- Use dependency injection in constructor.
+- Must implement a single `handle()` method.
+- Name with verb + noun + Action (e.g., `CreateUserAction`).
+
+Example:
+```php
+readonly class CreateTodoAction
+{
+    public function __construct(
+        private TodoRepository $repository,
+    ) {}
+
+    public function handle(CreateTodoRequest $request): Todo
+    {
+        return $this->repository->create($request->validated());
+    }
+}
+```
+
+### 3.2 Data Transfer Objects (DTOs)
+
+- Use for transferring structured data between layers.
+- Place in `app/DTOs` directory.
+- Must be `readonly` classes.
+- Use constructor property promotion.
+- Include static factory methods for common conversions.
+- Name with noun + Dto (e.g., `UserDto`).
+- **STRICT**: DTOs must NEVER contain null values, with the ONLY exception of numeric fields where null represents a specific business meaning.
+
+Example:
+```php
+readonly class TodoDto
+{
+    public function __construct(
+        public string $title,
+        public string $description,
+        public bool $completed,
+        public int $priority,
+        public array $tags,
+        public ?int $parentId = null,  // Only numeric fields can be nullable
+    ) {}
+
+    public static function fromModel(Todo $todo): self
+    {
+        return new self(
+            title: $todo->title,
+            description: $todo->description,
+            completed: $todo->completed,
+            priority: $todo->priority,
+            tags: $todo->tags,
+            parentId: $todo->parent_id
+        );
+    }
+
+    public static function fromArray(array $data): self
+    {
+        // No default values used for non-numeric fields
+        return new self(
+            title: $data['title'],
+            description: $data['description'],
+            completed: $data['completed'],
+            priority: $data['priority'],
+            tags: $data['tags'],
+            parentId: $data['parent_id'] ?? null  // Only nullable for numeric field
+        );
+    }
+}
+```
+
+### 3.3 Enums
+
+- Use for fixed sets of related values.
+- Place in `app/Enums` directory.
+- Use backed enums for database storage.
+- Name with descriptive noun (e.g., `UserStatus`).
+- Include helper methods when needed.
+
+Example:
+```php
+enum UserRole: string
+{
+    case ADMIN = 'admin';
+    case EDITOR = 'editor';
+    case USER = 'user';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+}
+```
+
+### 3.4 Services
+
+- Handle business logic and orchestration.
+- Place in `app/Services` directory.
+- Use dependency injection.
+- Name with noun + Service (e.g., `UserService`).
+- Should be focused and follow Single Responsibility Principle.
+
+Example:
+```php
+class UserService
+{
+    public function __construct(
+        private UserRepository $repository,
+        private MailService $mailService,
+    ) {}
+
+    public function registerUser(array $data): User
+    {
+        $user = $this->repository->create($data);
+        $this->mailService->sendWelcomeEmail($user);
+        return $user;
+    }
+}
+```
+
+## 4. CODE STYLE
+
+### 4.1 Formatting
+
+- Use consistent indentation (4 spaces).
+- Keep line lengths reasonable (120 characters maximum).
+- Use method chaining on new lines:
+
+```php
+// Correct
+$query->where('id', $id)
+    ->where('name', $name)
+    ->where('email', $email);
+
+// Incorrect
+$query->where('id', $id)->where('name', $name)->where('email', $email);
+```
+
+### 4.2 Type Declarations
+
+- Always use strict typing (`declare(strict_types=1)`).
+- Use return type declarations for all methods.
+- Use property type declarations.
+- Use union types where appropriate.
+- Never use `mixed` type; be as specific as possible.
+
+## 5. PROJECT STRUCTURE
+
+### 5.1 Controllers
+
+- Keep controllers thin.
+- Use method injection for dependencies.
+- Return appropriate HTTP responses.
+- Use FormRequest classes for validation.
+- Name with singular resource name + Controller (e.g., `UserController`).
+
+### 5.2 Models
+
+- Use Laravel's naming conventions (singular, PascalCase).
+- Define relationships clearly.
+- Avoid `$fillable`; instead use explicit attribute assignment in services or actions.
+- Use `Model::query()` instead of `DB::` facade.
+- Document properties with PHPDoc:
+
+```php
+/**
+ * @property-read int $id
+ * @property string $name
+ * @property string $email
+ * @property ?Carbon $email_verified_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Collection|Post[] $posts
+ */
+class User extends Authenticatable
+{
+    // ...
+}
+```
+
+### 5.3 HTTP Requests
+
+- Use FormRequest for all validations.
+- Name FormRequests according to their purpose (e.g., `StoreUserRequest`, `UpdateUserRequest`).
+- Keep validation rules in the `rules()` method.
+- Use authorize() method for authorization checks.
+
+## 6. ERROR HANDLING
+
+- Use custom exceptions for business logic errors.
+- Log all unexpected errors.
+- Return appropriate HTTP status codes.
+- Provide meaningful error messages.
+- Use try-catch blocks only when you can handle the exception.
+- Create custom exception classes in `app/Exceptions`.
+
+## 7. TESTING
+
+- Write tests for all business logic.
+- Use Pest PHP for testing.
+- Follow AAA pattern (Arrange-Act-Assert).
+- Use factories for test data.
+- Aim for high test coverage.
+- Test edge cases and error conditions.
+
+## 8. PERFORMANCE
+
+- Use eager loading to prevent N+1 queries.
+- Implement caching where appropriate.
+- Use pagination for large datasets.
+- Optimize database queries.
+- Use queue for time-consuming tasks.
+- Monitor and optimize memory usage.
+
+## 9. DOCUMENTATION
+
+- Document complex business logic.
+- Use PHPDoc for all classes and methods.
+- Keep documentation up-to-date.
+- Include examples for complex functionality.
+- Document API endpoints using OpenAPI/Swagger.
+- Add README files for complex modules.
+
+## 10. CODE REVIEW
+
+- Review for security vulnerabilities.
+- Check for performance issues.
+- Ensure code follows these standards.
+- Look for code smells and anti-patterns.
+- Suggest improvements and optimizations.
+
+## 11. MAINTENANCE
+
+- Keep dependencies updated.
+- Remove unused code.
+- Refactor when necessary.
+- Keep documentation up-to-date.
+- Monitor application performance.
+- Address technical debt regularly.
