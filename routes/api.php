@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ClassController;
+use App\Http\Controllers\Dungeons\ClassController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +16,11 @@ Route::post('login', [AuthController::class, 'login']);
 Route::prefix('/calabozos')
     ->middleware('auth:sanctum')
     ->group(function (): void {
-        Route::get('/classes', [ClassController::class, 'getClasses']);
+
+Route::prefix('/classes')
+     ->group(function (): void {
+         Route::get('/', [ClassController::class, 'getClasses']);
+        Route::get('/{index}', [ClassController::class, 'getClass']);
+     });
+
     });
