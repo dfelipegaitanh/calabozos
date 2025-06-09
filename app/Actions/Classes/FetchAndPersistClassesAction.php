@@ -43,21 +43,22 @@ readonly class FetchAndPersistClassesAction
         if (isset($apiResponse['results']) && is_array($apiResponse['results'])) {
             foreach ($apiResponse['results'] as $classData) {
                 try {
-                    if (!is_array($classData)) {
+                    if (! is_array($classData)) {
                         continue; // Skip invalid entries
                     }
+
                     $classDto = ClassDto::fromArray($classData);
                     $this->createClassAction->handle($classDto);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // Log the error but continue processing other classes
                     \Log::warning('Failed to process class data', [
                         'class_data' => $classData,
-                        'error' => $e->getMessage()
+                        'error' => $e->getMessage(),
                     ]);
                 }
             }
         } else {
-            throw new \Exception('Invalid API response: missing or invalid results array');
+            throw new Exception('Invalid API response: missing or invalid results array');
         }
 
         return $apiResponse;

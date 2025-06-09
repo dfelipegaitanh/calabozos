@@ -17,10 +17,11 @@ Route::prefix('/calabozos')
     ->middleware('auth:sanctum')
     ->group(function (): void {
 
-Route::prefix('/classes')
-     ->group(function (): void {
-         Route::get('/', [ClassController::class, 'getClasses']);
-        Route::get('/{index}', [ClassController::class, 'getClass']);
-     });
+        Route::prefix('/classes')
+            ->group(function (): void {
+                Route::get('/', [ClassController::class, 'getClasses']);
+                Route::get('/{index}', [ClassController::class, 'getClass']);
+                Route::get('/{index}/spellcasting', [ClassController::class, 'getClassSpellcasting']);
+            });
 
     });

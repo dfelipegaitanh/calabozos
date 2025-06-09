@@ -18,10 +18,9 @@ use Illuminate\Support\Facades\Log;
  */
 class ClassController extends Controller
 {
-public function __construct(
-     protected readonly ClassService $classService
- ) {
- }
+    public function __construct(
+        protected readonly ClassService $classService
+    ) {}
 
     /**
      * Retrieve a specific character class by its index identifier.
@@ -83,6 +82,32 @@ public function __construct(
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to retrieve classes: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Retrieve spellcasting information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the spellcasting data or error message
+     */
+    public function getClassSpellcasting(string $index): JsonResponse
+    {
+        try {
+            $spellcasting = $this->classService->getClassSpellcasting($index);
+
+            return response()->json([
+                'spellcasting' => $spellcasting,x
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error retrieving spellcasting information: '.$e->getMessage(), [
+                'exception' => $e,
+                'class_id' => $index,
+            ]);
+
+            return response()->json([
+                'message' => 'Failed to retrieve spellcasting information: '.$e->getMessage(),
             ], 500);
         }
     }
