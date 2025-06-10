@@ -49,19 +49,6 @@ readonly class ClassService
     }
 
     /**
-     * Retrieve spellcasting information for a specific character class.
-     *
-     * @param  string  $index  The unique identifier for the class in the API
-     * @return array|null The spellcasting information or null if not found or the class doesn't have spellcasting
-     *
-     * @throws Exception If any error occurs during the API request
-     */
-    public function getClassSpellcasting(string $index): ?array
-    {
-        return $this->calabozosApi->getClassSpellcasting($index);
-    }
-
-    /**
      * Retrieve multiclassing information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -72,5 +59,18 @@ readonly class ClassService
     public function getClassMulticlassing(string $index): ?array
     {
         return $this->calabozosApi->getClassMulticlassing($index);
+    }
+
+    /**
+     * Retrieve spellcasting information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The spellcasting information or null if not found or the class doesn't have spellcasting
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassSpellcasting(string $index): ?array
+    {
+        return $this->calabozosApi->getClassSpellcasting($index);
     }
 }
