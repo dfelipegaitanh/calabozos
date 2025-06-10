@@ -9,6 +9,9 @@
 - All documentation, comments, and text content must be in English.
 - Follow SOLID principles and PSR-12 coding standards.
 - **IMPORTANT**: This project requires PHP 8.3 or higher. All code must be compatible with PHP 8.3 features and syntax.
+- The file README.md must be updated with any changes to the project structure or dependencies. This one must be in English and markdown format.
+- When creating new files, check the README.md file to see the current project structure and update it accordingly.
+- The use of fields or parameters with the `mixed` type is strictly prohibited. Always use explicit and specific types.
 
 ## 2. WORKFLOW
 
