@@ -59,36 +59,6 @@ class CalabozosApi extends CalabozosApiClient
     }
 
     /**
-     * Retrieve spellcasting information for a specific character class.
-     *
-     * @param  string  $index  The unique identifier for the class in the API
-     * @return array|null The spellcasting data or null if not found or the class doesn't have spellcasting
-     *
-     * @throws ConnectionException If API connection fails
-     * @throws InvalidArgumentException If class index is empty
-     */
-    public function getClassSpellcasting(string $index): ?array
-    {
-        if (in_array(mb_trim($index), ['', '0'], true)) {
-            throw new InvalidArgumentException('Class index cannot be empty');
-        }
-
-        $response = $this->get('/classes/'.$index.'/spellcasting');
-
-        if ($response->status() === 404) {
-            return null;
-        }
-
-        if (! $response->successful()) {
-            throw new ConnectionException(
-                "Failed to fetch spellcasting for class '{$index}': ".$response->status()
-            );
-        }
-
-        return $response->json();
-    }
-
-    /**
      * Retrieve multiclassing information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -112,6 +82,36 @@ class CalabozosApi extends CalabozosApiClient
         if (! $response->successful()) {
             throw new ConnectionException(
                 "Failed to fetch multiclassing information for class '{$index}': ".$response->status()
+            );
+        }
+
+        return $response->json();
+    }
+
+    /**
+     * Retrieve spellcasting information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The spellcasting data or null if not found or the class doesn't have spellcasting
+     *
+     * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
+     */
+    public function getClassSpellcasting(string $index): ?array
+    {
+        if (in_array(mb_trim($index), ['', '0'], true)) {
+            throw new InvalidArgumentException('Class index cannot be empty');
+        }
+
+        $response = $this->get('/classes/'.$index.'/spellcasting');
+
+        if ($response->status() === 404) {
+            return null;
+        }
+
+        if (! $response->successful()) {
+            throw new ConnectionException(
+                "Failed to fetch spellcasting for class '{$index}': ".$response->status()
             );
         }
 

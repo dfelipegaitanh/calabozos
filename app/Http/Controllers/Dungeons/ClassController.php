@@ -21,7 +21,7 @@ class ClassController extends Controller
 {
     use ApiResponse;
     use LoggingTrait;
-    
+
     public function __construct(
         protected readonly ClassService $classService
     ) {}
@@ -73,27 +73,6 @@ class ClassController extends Controller
     }
 
     /**
-     * Retrieve spellcasting information for a specific character class.
-     *
-     * @param  string  $index  The unique identifier for the class in the API
-     * @return JsonResponse HTTP response containing the spellcasting data or error message
-     */
-    public function getClassSpellcasting(string $index): JsonResponse
-    {
-        try {
-            $spellcasting = $this->classService->getClassSpellcasting($index);
-
-            return $this->successResponse(['spellcasting' => $spellcasting]);
-        } catch (Exception $e) {
-            $this->logError('Error retrieving spellcasting information', $e, [
-                'class_id' => $index,
-            ]);
-
-            return $this->errorResponse('Failed to retrieve spellcasting information: '.$e->getMessage());
-        }
-    }
-
-    /**
      * Retrieve multiclassing information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -111,6 +90,27 @@ class ClassController extends Controller
             ]);
 
             return $this->errorResponse('Failed to retrieve multiclassing information: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieve spellcasting information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the spellcasting data or error message
+     */
+    public function getClassSpellcasting(string $index): JsonResponse
+    {
+        try {
+            $spellcasting = $this->classService->getClassSpellcasting($index);
+
+            return $this->successResponse(['spellcasting' => $spellcasting]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving spellcasting information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve spellcasting information: '.$e->getMessage());
         }
     }
 }
