@@ -22,6 +22,7 @@ Route::prefix('/calabozos')
                 Route::get('/', [ClassController::class, 'getClasses']);
                 Route::get('/{index}', [ClassController::class, 'getClass']);
                 Route::get('/{index}/spellcasting', [ClassController::class, 'getClassSpellcasting']);
+                Route::get('/{index}/multiclassing', [ClassController::class, 'getClassMulticlassing']);
             });
 
     });

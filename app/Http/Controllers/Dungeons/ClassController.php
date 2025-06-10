@@ -35,13 +35,11 @@ class ClassController extends Controller
 
             if ($class === null || $class === []) {
                 return response()->json([
-                    'status' => 'error',
                     'message' => 'Class not found',
                 ], 404);
             }
 
             return response()->json([
-                'status' => 'success',
                 'data' => $class,
             ]);
         } catch (Exception $e) {
@@ -51,7 +49,6 @@ class ClassController extends Controller
             ]);
 
             return response()->json([
-                'status' => 'error',
                 'message' => 'Failed to retrieve class details: '.$e->getMessage(),
             ], 500);
         }
@@ -71,7 +68,6 @@ class ClassController extends Controller
             $classes = $this->classService->getAllClasses();
 
             return response()->json([
-                'status' => 'success',
                 'data' => $classes,
             ]);
         } catch (Exception $e) {
@@ -80,7 +76,6 @@ class ClassController extends Controller
             ]);
 
             return response()->json([
-                'status' => 'error',
                 'message' => 'Failed to retrieve classes: '.$e->getMessage(),
             ], 500);
         }
@@ -98,7 +93,7 @@ class ClassController extends Controller
             $spellcasting = $this->classService->getClassSpellcasting($index);
 
             return response()->json([
-                'spellcasting' => $spellcasting,x
+                'spellcasting' => $spellcasting,
             ]);
         } catch (Exception $e) {
             Log::error('Error retrieving spellcasting information: '.$e->getMessage(), [
@@ -108,6 +103,32 @@ class ClassController extends Controller
 
             return response()->json([
                 'message' => 'Failed to retrieve spellcasting information: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Retrieve multiclassing information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the multiclassing data or error message
+     */
+    public function getClassMulticlassing(string $index): JsonResponse
+    {
+        try {
+            $multiclassing = $this->classService->getClassMulticlassing($index);
+
+            return response()->json([
+                'multiclassing' => $multiclassing,
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error retrieving multiclassing information: '.$e->getMessage(), [
+                'exception' => $e,
+                'class_id' => $index,
+            ]);
+
+            return response()->json([
+                'message' => 'Failed to retrieve multiclassing information: '.$e->getMessage(),
             ], 500);
         }
     }

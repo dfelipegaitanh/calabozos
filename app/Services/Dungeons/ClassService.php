@@ -60,4 +60,17 @@ readonly class ClassService
     {
         return $this->calabozosApi->getClassSpellcasting($index);
     }
+
+    /**
+     * Retrieve multiclassing information for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The multiclassing information or null if not found or the class doesn't have multiclassing info
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassMulticlassing(string $index): ?array
+    {
+        return $this->calabozosApi->getClassMulticlassing($index);
+    }
 }
