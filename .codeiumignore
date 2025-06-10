@@ -1,0 +1,19 @@
+# Ignorar todo por defecto
+*
+
+# Incluir directorios específicos
+!/app/
+!/routes/
+!/resources/
+
+# Excluir archivos ocultos y directorios en los directorios incluidos
+**/.*
+**/.*/
+
+# Excluir archivos específicos comunes que no necesitan ser analizados
+**/*.log
+**/*.cache
+**/composer.lock
+**/package-lock.json
+**/yarn.lock
+**/bun.lockb
