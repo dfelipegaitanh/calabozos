@@ -38,8 +38,7 @@ class ClassFactory extends Factory
             'index' => $index,
             'name' => $name,
             'url' => $this->faker->url(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+
         ];
     }
 }

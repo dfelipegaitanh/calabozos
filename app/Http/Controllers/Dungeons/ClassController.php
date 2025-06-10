@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Dungeons;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ApiResponse;
+use App\Http\Traits\LoggingTrait;
 use App\Services\Dungeons\ClassService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Controller responsible for handling character class-related HTTP requests.
@@ -18,6 +19,9 @@ use Illuminate\Support\Facades\Log;
  */
 class ClassController extends Controller
 {
+    use ApiResponse;
+    use LoggingTrait;
+    
     public function __construct(
         protected readonly ClassService $classService
     ) {}
@@ -34,23 +38,16 @@ class ClassController extends Controller
             $class = $this->classService->getClassByIndex($index);
 
             if ($class === null || $class === []) {
-                return response()->json([
-                    'message' => 'Class not found',
-                ], 404);
+                return $this->notFoundResponse('Class not found');
             }
 
-            return response()->json([
-                'data' => $class,
-            ]);
+            return $this->successResponse(['class' => $class]);
         } catch (Exception $e) {
-            Log::error('Error retrieving class details: '.$e->getMessage(), [
-                'exception' => $e,
+            $this->logError('Error retrieving class details', $e, [
                 'class_id' => $index,
             ]);
 
-            return response()->json([
-                'message' => 'Failed to retrieve class details: '.$e->getMessage(),
-            ], 500);
+            return $this->errorResponse('Failed to retrieve class details: '.$e->getMessage());
         }
     }
 
@@ -67,17 +64,11 @@ class ClassController extends Controller
         try {
             $classes = $this->classService->getAllClasses();
 
-            return response()->json([
-                'data' => $classes,
-            ]);
+            return $this->successResponse(['classes' => $classes]);
         } catch (Exception $e) {
-            Log::error('Error retrieving classes: '.$e->getMessage(), [
-                'exception' => $e,
-            ]);
+            $this->logError('Error retrieving classes', $e);
 
-            return response()->json([
-                'message' => 'Failed to retrieve classes: '.$e->getMessage(),
-            ], 500);
+            return $this->errorResponse('Failed to retrieve classes: '.$e->getMessage());
         }
     }
 
@@ -92,18 +83,13 @@ class ClassController extends Controller
         try {
             $spellcasting = $this->classService->getClassSpellcasting($index);
 
-            return response()->json([
-                'spellcasting' => $spellcasting,
-            ]);
+            return $this->successResponse(['spellcasting' => $spellcasting]);
         } catch (Exception $e) {
-            Log::error('Error retrieving spellcasting information: '.$e->getMessage(), [
-                'exception' => $e,
+            $this->logError('Error retrieving spellcasting information', $e, [
                 'class_id' => $index,
             ]);
 
-            return response()->json([
-                'message' => 'Failed to retrieve spellcasting information: '.$e->getMessage(),
-            ], 500);
+            return $this->errorResponse('Failed to retrieve spellcasting information: '.$e->getMessage());
         }
     }
 
@@ -118,18 +104,13 @@ class ClassController extends Controller
         try {
             $multiclassing = $this->classService->getClassMulticlassing($index);
 
-            return response()->json([
-                'multiclassing' => $multiclassing,
-            ]);
+            return $this->successResponse(['multiclassing' => $multiclassing]);
         } catch (Exception $e) {
-            Log::error('Error retrieving multiclassing information: '.$e->getMessage(), [
-                'exception' => $e,
+            $this->logError('Error retrieving multiclassing information', $e, [
                 'class_id' => $index,
             ]);
 
-            return response()->json([
-                'message' => 'Failed to retrieve multiclassing information: '.$e->getMessage(),
-            ], 500);
+            return $this->errorResponse('Failed to retrieve multiclassing information: '.$e->getMessage());
         }
     }
 }
