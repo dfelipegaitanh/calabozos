@@ -53,6 +53,12 @@ Route::prefix('/classes')
 
         // GET /calabozos/classes/{index}/spellcasting - Get spellcasting info
         Route::get('/{index}/spellcasting', [ClassController::class, 'getClassSpellcasting']);
+        
+        // GET /calabozos/classes/{index}/multiclassing - Get multiclassing info
+        Route::get('/{index}/multiclassing', [ClassController::class, 'getClassMulticlassing']);
+        
+        // GET /calabozos/classes/{index}/subclasses - Get available subclasses
+        Route::get('/{index}/subclasses', [ClassController::class, 'getClassSubclasses']);
     });
 ```
 
@@ -91,6 +97,7 @@ The API provides the following endpoints:
 - `GET /api/calabozos/classes/{index}` - Get a specific character class by index
 - `GET /api/calabozos/classes/{index}/spellcasting` - Get spellcasting information for a specific class
 - `GET /api/calabozos/classes/{index}/multiclassing` - Get multiclassing information for a specific class
+- `GET /api/calabozos/classes/{index}/subclasses` - Get subclasses available for a specific class
 
 All endpoints except login require authentication using Laravel Sanctum.
 

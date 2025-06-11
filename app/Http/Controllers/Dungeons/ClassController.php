@@ -113,4 +113,25 @@ class ClassController extends Controller
             return $this->errorResponse('Failed to retrieve spellcasting information: '.$e->getMessage());
         }
     }
+
+    /**
+     * Retrieve subclasses available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the subclasses data or error message
+     */
+    public function getClassSubclasses(string $index): JsonResponse
+    {
+        try {
+            $subclasses = $this->classService->getClassSubclasses($index);
+
+            return $this->successResponse(['subclasses' => $subclasses]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving subclasses information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve subclasses information: '.$e->getMessage());
+        }
+    }
 }

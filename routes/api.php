@@ -53,4 +53,12 @@ Route::prefix('/calabozos')
          */
         Route::get('/classes/{index}/multiclassing', [ClassController::class, 'getClassMulticlassing']);
 
+        /**
+         * Get subclasses available for a specific class
+         *
+         * @param  string  $index  The class identifier
+         * @return JsonResponse Subclasses available for the class
+         */
+        Route::get('/classes/{index}/subclasses', [ClassController::class, 'getClassSubclasses']);
+
     });

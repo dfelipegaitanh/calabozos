@@ -117,4 +117,35 @@ class CalabozosApi extends CalabozosApiClient
 
         return $response->json();
     }
+
+    /**
+     * Retrieve subclasses available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The subclasses data or null if not found
+     *
+     * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
+     */
+    public function getClassSubclasses(string $index): ?array
+    {
+        if (in_array(mb_trim($index), ['', '0'], true)) {
+            throw new InvalidArgumentException('Class index cannot be empty');
+        }
+
+        $response = $this->get('/classes/'.$index.'/subclasses');
+
+        if ($response->status() === 404) {
+            return null;
+        }
+
+        if (! $response->successful()) {
+            throw new ConnectionException(
+                "Failed to fetch subclasses for class '{$index}': ".$response->status()
+            );
+        }
+
+        return $response->json();
+    }
+
 }

@@ -73,4 +73,18 @@ readonly class ClassService
     {
         return $this->calabozosApi->getClassSpellcasting($index);
     }
+
+    /**
+     * Retrieve subclasses available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The subclasses information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassSubclasses(string $index): ?array
+    {
+        return $this->calabozosApi->getClassSubclasses($index);
+    }
+    
 }
