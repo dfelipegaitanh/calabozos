@@ -22,6 +22,7 @@ class CalabozosApi extends CalabozosApiClient
      * @return array|null The class data or null if not found
      *
      * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
      */
     public function getClass(string $index): ?array
     {
@@ -148,4 +149,93 @@ class CalabozosApi extends CalabozosApiClient
         return $response->json();
     }
 
+    /**
+     * Retrieve spells available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The spells data or null if not found
+     *
+     * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
+     */
+    public function getClassSpells(string $index): ?array
+    {
+        if (in_array(mb_trim($index), ['', '0'], true)) {
+            throw new InvalidArgumentException('Class index cannot be empty');
+        }
+
+        $response = $this->get('/classes/'.$index.'/spells');
+
+        if ($response->status() === 404) {
+            return null;
+        }
+
+        if (! $response->successful()) {
+            throw new ConnectionException(
+                "Failed to fetch spells for class '{$index}': ".$response->status()
+            );
+        }
+
+        return $response->json();
+    }
+    
+    /**
+     * Retrieve features available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The features data or null if not found
+     *
+     * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
+     */
+    public function getClassFeatures(string $index): ?array
+    {
+        if (in_array(mb_trim($index), ['', '0'], true)) {
+            throw new InvalidArgumentException('Class index cannot be empty');
+        }
+
+        $response = $this->get('/classes/'.$index.'/features');
+
+        if ($response->status() === 404) {
+            return null;
+        }
+
+        if (! $response->successful()) {
+            throw new ConnectionException(
+                "Failed to fetch features for class '{$index}': ".$response->status()
+            );
+        }
+
+        return $response->json();
+    }
+    
+    /**
+     * Retrieve proficiencies available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The proficiencies data or null if not found
+     *
+     * @throws ConnectionException If API connection fails
+     * @throws InvalidArgumentException If class index is empty
+     */
+    public function getClassProficiencies(string $index): ?array
+    {
+        if (in_array(mb_trim($index), ['', '0'], true)) {
+            throw new InvalidArgumentException('Class index cannot be empty');
+        }
+
+        $response = $this->get('/classes/'.$index.'/proficiencies');
+
+        if ($response->status() === 404) {
+            return null;
+        }
+
+        if (! $response->successful()) {
+            throw new ConnectionException(
+                "Failed to fetch proficiencies for class '{$index}': ".$response->status()
+            );
+        }
+
+        return $response->json();
+    }
 }

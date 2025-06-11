@@ -87,4 +87,42 @@ readonly class ClassService
         return $this->calabozosApi->getClassSubclasses($index);
     }
     
+    /**
+     * Retrieve spells available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The spells information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassSpells(string $index): ?array
+    {
+        return $this->calabozosApi->getClassSpells($index);
+    }
+    
+    /**
+     * Retrieve features available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The features information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassFeatures(string $index): ?array
+    {
+        return $this->calabozosApi->getClassFeatures($index);
+    }
+    
+    /**
+     * Retrieve proficiencies available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The proficiencies information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassProficiencies(string $index): ?array
+    {
+        return $this->calabozosApi->getClassProficiencies($index);
+    }
 }

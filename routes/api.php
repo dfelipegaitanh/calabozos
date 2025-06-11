@@ -61,4 +61,28 @@ Route::prefix('/calabozos')
          */
         Route::get('/classes/{index}/subclasses', [ClassController::class, 'getClassSubclasses']);
 
+        /**
+         * Get spells available for a specific class
+         *
+         * @param  string  $index  The class identifier
+         * @return JsonResponse Spells available for the class
+         */
+        Route::get('/classes/{index}/spells', [ClassController::class, 'getClassSpells']);
+
+        /**
+         * Get features available for a specific class
+         *
+         * @param  string  $index  The class identifier
+         * @return JsonResponse Features available for the class
+         */
+        Route::get('/classes/{index}/features', [ClassController::class, 'getClassFeatures']);
+
+        /**
+         * Get proficiencies available for a specific class
+         *
+         * @param  string  $index  The class identifier
+         * @return JsonResponse Proficiencies available for the class
+         */
+        Route::get('/classes/{index}/proficiencies', [ClassController::class, 'getClassProficiencies']);
+
     });
