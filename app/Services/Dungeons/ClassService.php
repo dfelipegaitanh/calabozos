@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Dungeons;
 
 use App\Actions\Classes\FetchAndPersistClassesAction;
+use App\Collections\ClassCollection;
 use App\Services\Api\CalabozosApi;
 use Exception;
 
@@ -26,11 +27,11 @@ readonly class ClassService
      *
      * This method delegates the fetch and persist operations to the FetchAndPersistClassesAction.
      *
-     * @return array The complete API response containing all classes
+     * @return ClassCollection The complete API response containing all classes
      *
      * @throws Exception If any error occurs during the process
      */
-    public function getAllClasses(): array
+    public function getAllClasses(): ClassCollection
     {
         return $this->fetchAndPersistClassesAction->handle();
     }
@@ -86,7 +87,7 @@ readonly class ClassService
     {
         return $this->calabozosApi->getClassSubclasses($index);
     }
-    
+
     /**
      * Retrieve spells available for a specific character class.
      *
@@ -99,7 +100,7 @@ readonly class ClassService
     {
         return $this->calabozosApi->getClassSpells($index);
     }
-    
+
     /**
      * Retrieve features available for a specific character class.
      *
@@ -112,7 +113,7 @@ readonly class ClassService
     {
         return $this->calabozosApi->getClassFeatures($index);
     }
-    
+
     /**
      * Retrieve proficiencies available for a specific character class.
      *

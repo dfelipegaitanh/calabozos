@@ -10,6 +10,8 @@ app/
 │   └── Classes/
 │       ├── CreateClassAction.php        # Creates or retrieves a class character
 │       └── FetchAndPersistClassesAction.php  # Fetches classes from API and persists them
+├── Collections/
+│   └── ClassCollection.php             # Collection Value Object for ClassDto items
 ├── DTOs/
 │   └── Classes/
 │       └── ClassDto.php                 # DTO for character class data
@@ -53,10 +55,10 @@ Route::prefix('/classes')
 
         // GET /calabozos/classes/{index}/spellcasting - Get spellcasting info
         Route::get('/{index}/spellcasting', [ClassController::class, 'getClassSpellcasting']);
-        
+
         // GET /calabozos/classes/{index}/multiclassing - Get multiclassing info
         Route::get('/{index}/multiclassing', [ClassController::class, 'getClassMulticlassing']);
-        
+
         // GET /calabozos/classes/{index}/subclasses - Get available subclasses
         Route::get('/{index}/subclasses', [ClassController::class, 'getClassSubclasses']);
     });
@@ -90,6 +92,7 @@ The API provides the following endpoints:
 ### Authentication
 
 - `POST /api/login` - Authenticate user and receive API token
+- `GET /api/user` - Get information about the authenticated user (requires authentication)
 
 ### Character Classes
 
@@ -98,6 +101,9 @@ The API provides the following endpoints:
 - `GET /api/calabozos/classes/{index}/spellcasting` - Get spellcasting information for a specific class
 - `GET /api/calabozos/classes/{index}/multiclassing` - Get multiclassing information for a specific class
 - `GET /api/calabozos/classes/{index}/subclasses` - Get subclasses available for a specific class
+- `GET /api/calabozos/classes/{index}/spells` - Get spells available for a specific class
+- `GET /api/calabozos/classes/{index}/features` - Get features available for a specific class
+- `GET /api/calabozos/classes/{index}/proficiencies` - Get proficiencies available for a specific class
 
 All endpoints except login require authentication using Laravel Sanctum.
 
@@ -112,8 +118,36 @@ The API routes integrate with the project architecture as follows:
 5. **DTOs** transfer data between layers in a structured format
 6. **Models** represent database entities and relationships
 7. **Traits** provide reusable functionality across different components
+8. **Collections** encapsulate operations on collections of DTOs or entities
 
 This layered architecture ensures separation of concerns and follows the SOLID principles established in the project standards.
+
+## Collection Value Objects
+
+The project implements Collection Value Objects to handle collections of DTOs in a type-safe and domain-specific manner:
+
+- Located in the `app/Collections` directory
+- Implemented as `readonly` classes that wrap an `Illuminate\Support\Collection`
+- Provide domain-specific methods for working with collections of specific DTOs
+- Include static factory methods like `fromArray()` and `fromModels()` for easy creation
+- Expose chainable methods that maintain the collection's type safety
+
+Example usage:
+
+```php
+// Create from an array of data
+$classCollection = ClassCollection::fromArray($apiResponse['results']);
+
+// Create from models
+$classCollection = ClassCollection::fromModels($classModels);
+
+// Access the underlying collection
+$classDtos = $classCollection->items;
+
+// Use helper methods
+$count = $classCollection->count();
+$firstClassDto = $classCollection->first();
+```
 
 ## Shared Components
 
