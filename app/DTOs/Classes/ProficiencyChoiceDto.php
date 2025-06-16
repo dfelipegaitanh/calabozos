@@ -6,7 +6,7 @@ namespace App\DTOs\Classes;
 
 /**
  * Data Transfer Object for proficiency choice data.
- * 
+ *
  * Used in: ClassService::getClassByIndex
  */
 readonly class ProficiencyChoiceDto
@@ -17,7 +17,7 @@ readonly class ProficiencyChoiceDto
         public string $type,
         public array $from
     ) {}
-    
+
     public static function fromArray(array $data): self
     {
         return new self(

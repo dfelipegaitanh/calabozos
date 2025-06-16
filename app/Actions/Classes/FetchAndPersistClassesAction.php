@@ -65,6 +65,6 @@ readonly class FetchAndPersistClassesAction
             throw new Exception('Invalid API response: missing or invalid results array');
         }
 
-        return  ClassCollection::fromArray($apiResponse['results']);
+        return ClassCollection::fromArray($apiResponse['results']);
     }
 }

@@ -6,7 +6,7 @@ namespace App\DTOs\Classes;
 
 /**
  * Data Transfer Object for prerequisite data.
- * 
+ *
  * Used in: ClassService::getClassMulticlassing
  */
 readonly class PrerequisiteDto
@@ -15,7 +15,7 @@ readonly class PrerequisiteDto
         public AbilityScoreReferenceDto $abilityScore,
         public int $minimumScore
     ) {}
-    
+
     public static function fromArray(array $data): self
     {
         return new self(

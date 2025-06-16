@@ -6,7 +6,7 @@ namespace App\DTOs\Classes;
 
 /**
  * Data Transfer Object for proficiency reference data.
- * 
+ *
  * Used in: ClassService::getClassProficiencies
  */
 readonly class ProficiencyReferenceDto
@@ -16,7 +16,7 @@ readonly class ProficiencyReferenceDto
         public string $name,
         public string $url
     ) {}
-    
+
     public static function fromArray(array $data): self
     {
         return new self(

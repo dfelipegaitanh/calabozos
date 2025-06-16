@@ -30,11 +30,11 @@ readonly class ClassCollection
      * Create a ClassCollection from an array of class data.
      *
      * @param  array  $data  Array of raw class data
-     * @return self  New ClassCollection instance
+     * @return self New ClassCollection instance
      */
     public static function fromArray(array $data): self
     {
-        $classes = collect($data)->map(function (array $classData) {
+        $classes = collect($data)->map(function (array $classData): \App\DTOs\Classes\ClassDto {
             return ClassDto::fromArray($classData);
         });
 
@@ -45,11 +45,11 @@ readonly class ClassCollection
      * Create a ClassCollection from a collection of ClassCharacter models.
      *
      * @param  Collection<int, ClassCharacter>  $classes  Collection of ClassCharacter models
-     * @return self  New ClassCollection instance
+     * @return self New ClassCollection instance
      */
     public static function fromModels(Collection $classes): self
     {
-        $classDtos = $classes->map(function (ClassCharacter $class) {
+        $classDtos = $classes->map(function (ClassCharacter $class): \App\DTOs\Classes\ClassDto {
             return ClassDto::fromModel($class);
         });
 
@@ -59,7 +59,7 @@ readonly class ClassCollection
     /**
      * Get the count of classes in the collection.
      *
-     * @return int  The number of classes in the collection
+     * @return int The number of classes in the collection
      */
     public function count(): int
     {
@@ -67,9 +67,19 @@ readonly class ClassCollection
     }
 
     /**
+     * Get the first class in the collection.
+     *
+     * @return ClassDto|null The first ClassDto or null if collection is empty
+     */
+    public function first(): ?ClassDto
+    {
+        return $this->items->first();
+    }
+
+    /**
      * Check if the collection is empty.
      *
-     * @return bool  True if the collection is empty, false otherwise
+     * @return bool True if the collection is empty, false otherwise
      */
     public function isEmpty(): bool
     {
@@ -77,26 +87,16 @@ readonly class ClassCollection
     }
 
     /**
-     * Get the first class in the collection.
-     *
-     * @return ClassDto|null  The first ClassDto or null if collection is empty
-     */
-    public function first(): ?ClassDto
-    {
-        return $this->items->first();
-    }
-    
-    /**
      * Map over each item in the collection.
      *
      * @param  callable  $callback  Function to apply to each item
-     * @return Collection  The transformed collection
+     * @return Collection The transformed collection
      */
     public function map(callable $callback): Collection
     {
         return $this->items->map($callback);
     }
-    
+
     /**
      * Convert the collection to an array.
      *

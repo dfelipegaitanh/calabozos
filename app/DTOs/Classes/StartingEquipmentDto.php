@@ -6,7 +6,7 @@ namespace App\DTOs\Classes;
 
 /**
  * Data Transfer Object for starting equipment data.
- * 
+ *
  * Used in: ClassService::getClassByIndex
  */
 readonly class StartingEquipmentDto
@@ -15,7 +15,7 @@ readonly class StartingEquipmentDto
         public EquipmentReferenceDto $equipment,
         public int $quantity
     ) {}
-    
+
     public static function fromArray(array $data): self
     {
         return new self(
