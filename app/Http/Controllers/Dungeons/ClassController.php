@@ -73,6 +73,27 @@ class ClassController extends Controller
     }
 
     /**
+     * Retrieve features available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the features data or error message
+     */
+    public function getClassFeatures(string $index): JsonResponse
+    {
+        try {
+            $features = $this->classService->getClassFeatures($index);
+
+            return $this->successResponse(['features' => $features]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving features information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve features information: '.$e->getMessage());
+        }
+    }
+
+    /**
      * Retrieve multiclassing information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -94,6 +115,27 @@ class ClassController extends Controller
     }
 
     /**
+     * Retrieve proficiencies available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the proficiencies data or error message
+     */
+    public function getClassProficiencies(string $index): JsonResponse
+    {
+        try {
+            $proficiencies = $this->classService->getClassProficiencies($index);
+
+            return $this->successResponse(['proficiencies' => $proficiencies]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving proficiencies information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve proficiencies information: '.$e->getMessage());
+        }
+    }
+
+    /**
      * Retrieve spellcasting information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -111,6 +153,48 @@ class ClassController extends Controller
             ]);
 
             return $this->errorResponse('Failed to retrieve spellcasting information: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieve spells available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the spells data or error message
+     */
+    public function getClassSpells(string $index): JsonResponse
+    {
+        try {
+            $spells = $this->classService->getClassSpells($index);
+
+            return $this->successResponse(['spells' => $spells]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving spells information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve spells information: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieve subclasses available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return JsonResponse HTTP response containing the subclasses data or error message
+     */
+    public function getClassSubclasses(string $index): JsonResponse
+    {
+        try {
+            $subclasses = $this->classService->getClassSubclasses($index);
+
+            return $this->successResponse(['subclasses' => $subclasses]);
+        } catch (Exception $e) {
+            $this->logError('Error retrieving subclasses information', $e, [
+                'class_id' => $index,
+            ]);
+
+            return $this->errorResponse('Failed to retrieve subclasses information: '.$e->getMessage());
         }
     }
 }

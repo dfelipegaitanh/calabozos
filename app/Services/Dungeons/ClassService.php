@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Dungeons;
 
 use App\Actions\Classes\FetchAndPersistClassesAction;
+use App\Collections\ClassCollection;
 use App\Services\Api\CalabozosApi;
 use Exception;
 
@@ -49,6 +50,19 @@ readonly class ClassService
     }
 
     /**
+     * Retrieve features available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The features information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassFeatures(string $index): ?array
+    {
+        return $this->calabozosApi->getClassFeatures($index);
+    }
+
+    /**
      * Retrieve multiclassing information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -62,6 +76,19 @@ readonly class ClassService
     }
 
     /**
+     * Retrieve proficiencies available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The proficiencies information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassProficiencies(string $index): ?array
+    {
+        return $this->calabozosApi->getClassProficiencies($index);
+    }
+
+    /**
      * Retrieve spellcasting information for a specific character class.
      *
      * @param  string  $index  The unique identifier for the class in the API
@@ -72,5 +99,31 @@ readonly class ClassService
     public function getClassSpellcasting(string $index): ?array
     {
         return $this->calabozosApi->getClassSpellcasting($index);
+    }
+
+    /**
+     * Retrieve spells available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The spells information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassSpells(string $index): ?array
+    {
+        return $this->calabozosApi->getClassSpells($index);
+    }
+
+    /**
+     * Retrieve subclasses available for a specific character class.
+     *
+     * @param  string  $index  The unique identifier for the class in the API
+     * @return array|null The subclasses information or null if not found
+     *
+     * @throws Exception If any error occurs during the API request
+     */
+    public function getClassSubclasses(string $index): ?array
+    {
+        return $this->calabozosApi->getClassSubclasses($index);
     }
 }
