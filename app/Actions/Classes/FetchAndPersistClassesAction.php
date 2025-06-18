@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Classes;
 
+use App\Collections\ClassCollection;
 use App\DTOs\Classes\ClassDto;
 use App\Services\Api\CalabozosApi;
 use Exception;
@@ -32,15 +33,17 @@ readonly class FetchAndPersistClassesAction
      * 3. Uses CreateClassAction to persist the class data
      * 4. Logs any errors that occur during processing of individual classes
      *
-     * @return array The original response from the CalabozosApi
+     * @return ClassCollection Collection of ClassDtos for all classes
      *
      * @throws Exception If the API response is invalid or missing the results array
      */
-    public function handle(): array
+    public function handle(): ClassCollection
     {
         $apiResponse = $this->calabozosApi->getClasses();
 
         if (isset($apiResponse['results']) && is_array($apiResponse['results'])) {
+            $classDtos = collect();
+
             foreach ($apiResponse['results'] as $classData) {
                 try {
                     if (! is_array($classData)) {
@@ -49,6 +52,7 @@ readonly class FetchAndPersistClassesAction
 
                     $classDto = ClassDto::fromArray($classData);
                     $this->createClassAction->handle($classDto);
+                    $classDtos->push($classDto);
                 } catch (Exception $e) {
                     // Log the error but continue processing other classes
                     \Log::warning('Failed to process class data', [
@@ -57,10 +61,11 @@ readonly class FetchAndPersistClassesAction
                     ]);
                 }
             }
-        } else {
-            throw new Exception('Invalid API response: missing or invalid results array');
+
+            return new ClassCollection(items: $classDtos);
         }
 
-        return $apiResponse;
+        throw new Exception('Invalid API response: missing or invalid results array');
+
     }
 }

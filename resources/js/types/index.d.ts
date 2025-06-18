@@ -41,3 +41,13 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface ClassItem {
+    index: string;
+    name: string;
+    url: string;
+}
+
+export interface DashboardProps {
+    classes: ClassItem[];
+}

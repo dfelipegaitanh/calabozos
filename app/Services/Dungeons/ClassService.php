@@ -27,11 +27,11 @@ readonly class ClassService
      *
      * This method delegates the fetch and persist operations to the FetchAndPersistClassesAction.
      *
-     * @return array The complete API response containing all classes
+     * @return ClassCollection The complete API response containing all classes
      *
      * @throws Exception If any error occurs during the process
      */
-    public function getAllClasses(): array
+    public function getAllClasses(): ClassCollection
     {
         return $this->fetchAndPersistClassesAction->handle();
     }

@@ -33,7 +33,7 @@ readonly class ClassCollectionDto
      */
     public static function fromArray(array $data): self
     {
-        $classes = collect($data)->map(function (array $classData): \App\DTOs\Classes\ClassDto {
+        $classes = collect($data)->map(function (array $classData): ClassDto {
             return ClassDto::fromArray($classData);
         });
 
@@ -48,7 +48,7 @@ readonly class ClassCollectionDto
      */
     public static function fromModels(Collection $classes): self
     {
-        $classDtos = $classes->map(function (ClassCharacter $class): \App\DTOs\Classes\ClassDto {
+        $classDtos = $classes->map(function (ClassCharacter $class): ClassDto {
             return ClassDto::fromModel($class);
         });
 

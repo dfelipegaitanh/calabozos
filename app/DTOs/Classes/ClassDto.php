@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTOs\Classes;
 
 use App\Models\ClassCharacter;
+use Spatie\LaravelData\Data;
 
 /**
  * Data Transfer Object for character class data.
@@ -12,7 +13,7 @@ use App\Models\ClassCharacter;
  * This DTO represents the core data structure for character classes,
  * providing immutable data transfer between layers of the application.
  */
-readonly class ClassDto
+class ClassDto extends Data
 {
     /**
      * Create a new ClassDto instance.

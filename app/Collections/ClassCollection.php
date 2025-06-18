@@ -7,6 +7,7 @@ namespace App\Collections;
 use App\DTOs\Classes\ClassDto;
 use App\Models\ClassCharacter;
 use Illuminate\Support\Collection;
+use Spatie\LaravelData\Data;
 
 /**
  * Collection Value Object for character classes.
@@ -15,7 +16,7 @@ use Illuminate\Support\Collection;
  * an immutable container for working with multiple class data objects
  * across the application.
  */
-readonly class ClassCollection
+class ClassCollection extends Data
 {
     /**
      * Create a new ClassCollection instance.
@@ -34,7 +35,7 @@ readonly class ClassCollection
      */
     public static function fromArray(array $data): self
     {
-        $classes = collect($data)->map(function (array $classData): \App\DTOs\Classes\ClassDto {
+        $classes = collect($data)->map(function (array $classData): ClassDto {
             return ClassDto::fromArray($classData);
         });
 
@@ -49,7 +50,7 @@ readonly class ClassCollection
      */
     public static function fromModels(Collection $classes): self
     {
-        $classDtos = $classes->map(function (ClassCharacter $class): \App\DTOs\Classes\ClassDto {
+        $classDtos = $classes->map(function (ClassCharacter $class): ClassDto {
             return ClassDto::fromModel($class);
         });
 
