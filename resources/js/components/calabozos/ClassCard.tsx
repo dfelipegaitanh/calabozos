@@ -3,16 +3,20 @@ import { useState } from 'react';
 
 interface ClassCardProps {
     classItem: ClassItem;
+    onClick: (classItem: ClassItem) => void;
 }
 
-export function ClassCard({ classItem }: ClassCardProps) {
+export function ClassCard({ classItem, onClick }: ClassCardProps) {
     const [isActive, setIsActive] = useState(false);
 
     return (
         <div
             className={`flex flex-col items-center justify-center rounded-lg border border-sidebar-border/70 bg-white p-3 shadow-sm transition-all ${isActive ? 'scale-95 bg-primary/5 shadow-inner' : 'hover:scale-105 hover:border-primary/30 hover:bg-primary/5 hover:shadow-md'} cursor-pointer dark:bg-neutral-800`}
             onMouseDown={() => setIsActive(true)}
-            onMouseUp={() => setIsActive(false)}
+            onMouseUp={() => {
+                setIsActive(false);
+                onClick(classItem);
+            }}
             onMouseLeave={() => setIsActive(false)}
         >
             <div
