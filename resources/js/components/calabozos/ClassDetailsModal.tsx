@@ -3,7 +3,13 @@ import { Fragment } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { SpellcastingDetails } from './SpellcastingDetails';
 import { SpellcastingData } from '@/types/spellcasting';
-import { ClassData, ApiReference, ProficiencyChoice, OptionItem } from '@/types/classDetails';
+import { ClassData } from '@/types/classDetails';
+import { BasicInfo } from './class-details/BasicInfo';
+import { SavingThrows } from './class-details/SavingThrows';
+import { Proficiencies } from './class-details/Proficiencies';
+import { ProficiencyChoices } from './class-details/ProficiencyChoices';
+import { StartingEquipmentComponent } from './class-details/StartingEquipment';
+import { MulticlassingRequirements } from './class-details/MulticlassingRequirements';
 
 interface ClassDetailsProps {
     classData: ClassData | null;
@@ -57,105 +63,19 @@ export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData
                                 </div>
 
                                 <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
-                                    {/* Columna izquierda */}
                                     <div className="space-y-6">
-                                        {/* Información básica */}
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Información Básica</h4>
-                                            <div className="space-y-2">
-                                                <div>
-                                                    <span className="font-medium">Dado de Vida:</span> d{classData.hit_die}
-                                                </div>
-                                                <div>
-                                                    <span className="font-medium">Subclases:</span>{' '}
-                                                    {classData.subclasses.map((sc: ApiReference) => sc.name).join(', ')}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Tiradas de Salvación</h4>
-                                            <div className="flex flex-wrap gap-2">
-                                                {classData.saving_throws.map((save: ApiReference) => (
-                                                    <span
-                                                        key={save.index}
-                                                        className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
-                                                    >
-                                                        {save.name}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Competencias</h4>
-                                            <ul className="list-inside list-disc space-y-1">
-                                                {classData.proficiencies.map((prof: ApiReference) => (
-                                                    <li key={prof.index}>{prof.name}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                        <BasicInfo classData={classData} />
+                                        <SavingThrows savingThrows={classData.saving_throws} />
+                                        <Proficiencies proficiencies={classData.proficiencies} />
                                     </div>
 
                                     <div className="space-y-6">
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Opciones de Competencias</h4>
-                                            {classData.proficiency_choices.map((choice: ProficiencyChoice, idx: number) => (
-                                                <div key={idx} className="mb-3">
-                                                    <p className="mb-1 font-medium">{choice.desc}</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                        Elige {choice.choose} de:
-                                                    </p>
-                                                    <ul className="ml-4 list-inside list-disc text-sm">
-                                                        {choice.from.options?.map((option: OptionItem, optIdx: number) => {
-                                                            if (option.option_type === 'reference' && option.item) {
-                                                                return (
-                                                                    <li key={optIdx}>
-                                                                        {option.item.name}
-                                                                    </li>
-                                                                );
-                                                            } else if (option.option_type === 'choice' && option.choice) {
-                                                                return (
-                                                                    <li key={optIdx}>
-                                                                        [{option.choice.desc}]
-                                                                    </li>
-                                                                );
-                                                            }
-                                                            return null;
-                                                        })}
-                                                    </ul>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Equipo Inicial</h4>
-                                            <ul className="list-inside list-disc space-y-1">
-                                                {classData.starting_equipment.map((item, idx) => (
-                                                    <li key={idx}>
-                                                        {item.quantity} x {item.equipment.name}
-                                                    </li>
-                                                ))}
-                                            </ul>
-
-                                            <h5 className="mt-3 mb-1 font-medium">Opciones de equipo:</h5>
-                                            <ul className="list-inside list-disc space-y-1">
-                                                {classData.starting_equipment_options.map((option, idx) => (
-                                                    <li key={idx}>{option.desc}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-
-                                        <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
-                                            <h4 className="mb-2 text-lg font-semibold">Requisitos de Multiclase</h4>
-                                            <ul className="list-inside list-disc">
-                                                {classData.multi_classing.prerequisites.map((prereq, idx) => (
-                                                    <li key={idx}>
-                                                        {prereq.ability_score.name}: {prereq.minimum_score} mínimo
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                        <ProficiencyChoices proficiencyChoices={classData.proficiency_choices} />
+                                        <StartingEquipmentComponent
+                                            startingEquipment={classData.starting_equipment}
+                                            startingEquipmentOptions={classData.starting_equipment_options}
+                                        />
+                                        <MulticlassingRequirements multiclassing={classData.multi_classing} />
                                     </div>
                                 </div>
 
