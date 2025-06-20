@@ -18,7 +18,11 @@ export interface ApiReference {
  */
 export interface OptionItem {
     option_type: string;
-    item: ApiReference;
+    item?: ApiReference;
+    choice?: {
+        desc: string;
+        [key: string]: any;
+    };
 }
 
 /**

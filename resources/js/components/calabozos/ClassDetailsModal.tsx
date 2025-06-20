@@ -1,15 +1,15 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { SpellcastingDetails } from './SpellcastingDetails';
-import { SpellcastingData } from '../../types/spellcasting';
-import { ClassData } from '../../types/classDetails';
+import { SpellcastingData } from '@/types/spellcasting';
+import { ClassData, ApiReference, ProficiencyChoice, OptionItem } from '@/types/classDetails';
 
 interface ClassDetailsProps {
-    classData: ClassData | null; // Ahora con tipado completo
+    classData: ClassData | null;
     isOpen: boolean;
     onClose: () => void;
-    spellcastingData?: SpellcastingData; // Datos de lanzamiento de hechizos
+    spellcastingData?: SpellcastingData;
 }
 
 export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData }: ClassDetailsProps) {
@@ -68,16 +68,15 @@ export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData
                                                 </div>
                                                 <div>
                                                     <span className="font-medium">Subclases:</span>{' '}
-                                                    {classData.subclasses.map((sc: any) => sc.name).join(', ')}
+                                                    {classData.subclasses.map((sc: ApiReference) => sc.name).join(', ')}
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Tiradas de salvación */}
                                         <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
                                             <h4 className="mb-2 text-lg font-semibold">Tiradas de Salvación</h4>
                                             <div className="flex flex-wrap gap-2">
-                                                {classData.saving_throws.map((save: any) => (
+                                                {classData.saving_throws.map((save: ApiReference) => (
                                                     <span
                                                         key={save.index}
                                                         className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
@@ -88,30 +87,27 @@ export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData
                                             </div>
                                         </div>
 
-                                        {/* Competencias */}
                                         <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
                                             <h4 className="mb-2 text-lg font-semibold">Competencias</h4>
                                             <ul className="list-inside list-disc space-y-1">
-                                                {classData.proficiencies.map((prof: any) => (
+                                                {classData.proficiencies.map((prof: ApiReference) => (
                                                     <li key={prof.index}>{prof.name}</li>
                                                 ))}
                                             </ul>
                                         </div>
                                     </div>
 
-                                    {/* Columna derecha */}
                                     <div className="space-y-6">
-                                        {/* Opciones de competencias */}
                                         <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
                                             <h4 className="mb-2 text-lg font-semibold">Opciones de Competencias</h4>
-                                            {classData.proficiency_choices.map((choice: any, idx: number) => (
+                                            {classData.proficiency_choices.map((choice: ProficiencyChoice, idx: number) => (
                                                 <div key={idx} className="mb-3">
                                                     <p className="mb-1 font-medium">{choice.desc}</p>
                                                     <p className="text-sm text-gray-600 dark:text-gray-300">
                                                         Elige {choice.choose} de:
                                                     </p>
                                                     <ul className="ml-4 list-inside list-disc text-sm">
-                                                        {choice.from.options?.map((option: any, optIdx: number) => {
+                                                        {choice.from.options?.map((option: OptionItem, optIdx: number) => {
                                                             if (option.option_type === 'reference' && option.item) {
                                                                 return (
                                                                     <li key={optIdx}>
@@ -132,30 +128,28 @@ export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData
                                             ))}
                                         </div>
 
-                                        {/* Equipo inicial */}
                                         <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
                                             <h4 className="mb-2 text-lg font-semibold">Equipo Inicial</h4>
                                             <ul className="list-inside list-disc space-y-1">
-                                                {classData.starting_equipment.map((item: any, idx: number) => (
+                                                {classData.starting_equipment.map((item, idx) => (
                                                     <li key={idx}>
                                                         {item.quantity} x {item.equipment.name}
                                                     </li>
                                                 ))}
                                             </ul>
-                                            
+
                                             <h5 className="mt-3 mb-1 font-medium">Opciones de equipo:</h5>
                                             <ul className="list-inside list-disc space-y-1">
-                                                {classData.starting_equipment_options.map((option: any, idx: number) => (
+                                                {classData.starting_equipment_options.map((option, idx) => (
                                                     <li key={idx}>{option.desc}</li>
                                                 ))}
                                             </ul>
                                         </div>
 
-                                        {/* Multiclase */}
                                         <div className="rounded-lg bg-gray-50 p-4 dark:bg-neutral-700">
                                             <h4 className="mb-2 text-lg font-semibold">Requisitos de Multiclase</h4>
                                             <ul className="list-inside list-disc">
-                                                {classData.multi_classing.prerequisites.map((prereq: any, idx: number) => (
+                                                {classData.multi_classing.prerequisites.map((prereq, idx) => (
                                                     <li key={idx}>
                                                         {prereq.ability_score.name}: {prereq.minimum_score} mínimo
                                                     </li>
@@ -170,7 +164,7 @@ export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData
                                         <SpellcastingDetails spellcastingData={spellcastingData} />
                                     </div>
                                 )}
-                                
+
                                 <div className="mt-6 flex justify-end">
                                     <button
                                         type="button"

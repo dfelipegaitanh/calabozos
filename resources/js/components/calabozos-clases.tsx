@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ClassCard } from './calabozos/ClassCard';
 import { ClassDetailsModal } from './calabozos/ClassDetailsModal';
-import { SpellcastingData } from '../types/spellcasting';
-import { ClassData } from '../types/classDetails';
+import { SpellcastingData } from '@/types/spellcasting';
+import { ClassData } from '@/types/classDetails';
 
 interface ClassItem {
     index: string;
@@ -19,9 +19,8 @@ export function CalabozosClases({ className, classes = [] }: CalabozosClasesProp
     const [selectedClass, setSelectedClass] = useState<ClassData | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [spellcastingData, setSpellcastingData] = useState<SpellcastingData | null>(null);
-    
-    const handleClassClick = (classItem: ClassItem) => {
-        // Usar el JSON de ejemplo proporcionado
+
+    const handleClassClick = () => {
         const mockClassData: ClassData = {
             "index": "monk",
             "name": "Monk",
@@ -171,8 +170,7 @@ export function CalabozosClases({ className, classes = [] }: CalabozosClasesProp
                 }
             ]
         };
-        
-        // Datos de ejemplo para lanzamiento de hechizos
+
         const mockSpellcastingData: SpellcastingData = {
             "level": 1,
             "spellcasting_ability": {
@@ -237,9 +235,9 @@ export function CalabozosClases({ className, classes = [] }: CalabozosClasesProp
                 <h3 className="mb-4 text-lg font-medium">Clases de Personaje</h3>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {classes.map((classItem) => (
-                        <ClassCard 
-                            key={classItem.index} 
-                            classItem={classItem} 
+                        <ClassCard
+                            key={classItem.index}
+                            classItem={classItem}
                             onClick={handleClassClick}
                         />
                     ))}
@@ -248,8 +246,8 @@ export function CalabozosClases({ className, classes = [] }: CalabozosClasesProp
                     )}
                 </div>
             </div>
-        
-        <ClassDetailsModal 
+
+        <ClassDetailsModal
             classData={selectedClass}
             spellcastingData={spellcastingData || undefined}
             isOpen={isModalOpen}
