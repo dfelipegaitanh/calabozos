@@ -1,27 +1,8 @@
 import React from 'react';
-
-interface SpellcastingAbility {
-    index: string;
-    name: string;
-    url: string;
-    _id: string;
-}
-
-interface InfoItem {
-    _id: string;
-    name: string;
-    desc: string[];
-}
-
-interface SpellcastingDetails {
-    level: number;
-    spellcasting_ability: SpellcastingAbility;
-    info: InfoItem[];
-    _id: string;
-}
+import { SpellcastingData } from '../../types/spellcasting';
 
 interface SpellcastingDetailsProps {
-    spellcastingData: SpellcastingDetails;
+    spellcastingData: SpellcastingData;
 }
 
 export function SpellcastingDetails({ spellcastingData }: SpellcastingDetailsProps) {

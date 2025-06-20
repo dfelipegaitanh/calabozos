@@ -2,12 +2,14 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { SpellcastingDetails } from './SpellcastingDetails';
+import { SpellcastingData } from '../../types/spellcasting';
+import { ClassData } from '../../types/classDetails';
 
 interface ClassDetailsProps {
-    classData: any; // Tipado completo pendiente
+    classData: ClassData | null; // Ahora con tipado completo
     isOpen: boolean;
     onClose: () => void;
-    spellcastingData?: any; // Datos de lanzamiento de hechizos
+    spellcastingData?: SpellcastingData; // Datos de lanzamiento de hechizos
 }
 
 export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData }: ClassDetailsProps) {
