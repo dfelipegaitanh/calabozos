@@ -1,14 +1,16 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { SpellcastingDetails } from './SpellcastingDetails';
 
 interface ClassDetailsProps {
     classData: any; // Tipado completo pendiente
     isOpen: boolean;
     onClose: () => void;
+    spellcastingData?: any; // Datos de lanzamiento de hechizos
 }
 
-export function ClassDetailsModal({ classData, isOpen, onClose }: ClassDetailsProps) {
+export function ClassDetailsModal({ classData, isOpen, onClose, spellcastingData }: ClassDetailsProps) {
     if (!classData) return null;
 
     return (
@@ -161,6 +163,12 @@ export function ClassDetailsModal({ classData, isOpen, onClose }: ClassDetailsPr
                                     </div>
                                 </div>
 
+                                {spellcastingData && (
+                                    <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+                                        <SpellcastingDetails spellcastingData={spellcastingData} />
+                                    </div>
+                                )}
+                                
                                 <div className="mt-6 flex justify-end">
                                     <button
                                         type="button"
