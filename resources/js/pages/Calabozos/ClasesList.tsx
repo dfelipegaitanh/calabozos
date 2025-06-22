@@ -23,7 +23,7 @@ export default function ClasesList({ classes = [] }: ClasesListPageProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Clases de Personaje" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-neutral-800">
+                <div className="flex-1 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
                     <h1 className="mb-6 text-2xl font-semibold">Clases de Personaje</h1>
                     <div className="relative overflow-hidden rounded-xl">
                         <CalabozosClases classes={classes} className="w-full" />

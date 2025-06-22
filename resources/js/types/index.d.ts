@@ -48,6 +48,23 @@ export interface ClassItem {
     url: string;
 }
 
+export interface RaceItem {
+    index: string;
+    name: string;
+    url: string;
+}
+
+export interface RaceDetails {
+    speed: number;
+    size: string;
+    abilityBonus: string;
+    description?: string;
+    traits?: string[];
+    languages?: string[];
+}
+
 export interface DashboardProps {
     classes: ClassItem[];
+    races: RaceItem[];
+    raceDetails?: Record<string, RaceDetails>;
 }
