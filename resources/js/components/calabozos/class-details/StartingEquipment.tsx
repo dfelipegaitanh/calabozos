@@ -1,4 +1,3 @@
-import React from 'react';
 import { StartingEquipment, StartingEquipmentOption } from '@/types/classDetails';
 
 interface StartingEquipmentProps {

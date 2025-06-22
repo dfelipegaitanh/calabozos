@@ -1,4 +1,3 @@
-import React from 'react';
 import { Multiclassing } from '@/types/classDetails';
 
 interface MulticlassingRequirementsProps {

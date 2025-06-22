@@ -1,4 +1,3 @@
-import React from 'react';
 import { ApiReference } from '@/types/classDetails';
 
 interface ProficienciesProps {

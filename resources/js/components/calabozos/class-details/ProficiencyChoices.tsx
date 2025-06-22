@@ -1,5 +1,4 @@
-import React from 'react';
-import { ProficiencyChoice, OptionItem } from '@/types/classDetails';
+import { OptionItem, ProficiencyChoice } from '@/types/classDetails';
 
 interface ProficiencyChoicesProps {
     proficiencyChoices: ProficiencyChoice[];
@@ -12,23 +11,13 @@ export function ProficiencyChoices({ proficiencyChoices }: ProficiencyChoicesPro
             {proficiencyChoices.map((choice, idx) => (
                 <div key={idx} className="mb-3">
                     <p className="mb-1 font-medium">{choice.desc}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Elige {choice.choose} de:
-                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Elige {choice.choose} de:</p>
                     <ul className="ml-4 list-inside list-disc text-sm">
                         {choice.from.options?.map((option: OptionItem, optIdx: number) => {
                             if (option.option_type === 'reference' && option.item) {
-                                return (
-                                    <li key={optIdx}>
-                                        {option.item.name}
-                                    </li>
-                                );
+                                return <li key={optIdx}>{option.item.name}</li>;
                             } else if (option.option_type === 'choice' && option.choice) {
-                                return (
-                                    <li key={optIdx}>
-                                        [{option.choice.desc}]
-                                    </li>
-                                );
+                                return <li key={optIdx}>[{option.choice.desc}]</li>;
                             }
                             return null;
                         })}

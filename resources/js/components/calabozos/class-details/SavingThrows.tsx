@@ -1,4 +1,3 @@
-import React from 'react';
 import { ApiReference } from '@/types/classDetails';
 
 interface SavingThrowsProps {
@@ -11,10 +10,7 @@ export function SavingThrows({ savingThrows }: SavingThrowsProps) {
             <h4 className="mb-2 text-lg font-semibold">Tiradas de Salvación</h4>
             <div className="flex flex-wrap gap-2">
                 {savingThrows.map((save) => (
-                    <span
-                        key={save.index}
-                        className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
-                    >
+                    <span key={save.index} className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                         {save.name}
                     </span>
                 ))}

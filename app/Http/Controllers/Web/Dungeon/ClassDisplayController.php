@@ -29,6 +29,7 @@ class ClassDisplayController extends Controller
      *
      * This method fetches class data from the API endpoint and
      * renders the Clases page with the data.
+     *
      * @throws Exception
      */
     public function index(): Response

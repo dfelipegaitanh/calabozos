@@ -1,5 +1,4 @@
-import React from 'react';
-import { ClassData, ApiReference } from '@/types/classDetails';
+import { ApiReference, ClassData } from '@/types/classDetails';
 
 interface BasicInfoProps {
     classData: ClassData;
@@ -14,8 +13,7 @@ export function BasicInfo({ classData }: BasicInfoProps) {
                     <span className="font-medium">Dado de Vida:</span> d{classData.hit_die}
                 </div>
                 <div>
-                    <span className="font-medium">Subclases:</span>{' '}
-                    {classData.subclasses.map((sc: ApiReference) => sc.name).join(', ')}
+                    <span className="font-medium">Subclases:</span> {classData.subclasses.map((sc: ApiReference) => sc.name).join(', ')}
                 </div>
             </div>
         </div>

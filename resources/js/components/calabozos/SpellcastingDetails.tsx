@@ -1,4 +1,3 @@
-import React from 'react';
 import { SpellcastingData } from '@/types/spellcasting';
 import { SpellcastingHeader } from './spellcasting-details/SpellcastingHeader';
 import { SpellcastingInfoCard } from './spellcasting-details/SpellcastingInfoCard';
@@ -12,10 +11,7 @@ export function SpellcastingDetails({ spellcastingData }: SpellcastingDetailsPro
 
     return (
         <div className="space-y-6">
-            <SpellcastingHeader 
-                level={spellcastingData.level} 
-                spellcastingAbility={spellcastingData.spellcasting_ability} 
-            />
+            <SpellcastingHeader level={spellcastingData.level} spellcastingAbility={spellcastingData.spellcasting_ability} />
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {spellcastingData.info.map((item) => (
