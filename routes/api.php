@@ -94,4 +94,41 @@ Route::prefix('/calabozos')
         Route::get('/classes/{index}/proficiencies', [ClassController::class, 'getClassProficiencies'])
             ->name('classes.proficiencies');
 
+        Route::get('/races', [App\Http\Controllers\Dungeons\RaceController::class, 'getRaces'])
+            ->name('races.index');
+        /**
+         * Get details of a specific race by its index
+         *
+         * @param  string  $index  The race identifier (e.g., 'human', 'elf')
+         * @return JsonResponse Race details
+         */
+        Route::get('/races/{index}', [App\Http\Controllers\Dungeons\RaceController::class, 'getRace'])
+            ->name('races.index');
+
+        /**
+         * Get subraces available for a specific race
+         *
+         * @param  string  $index  The race identifier (e.g., 'human', 'elf')
+         * @return JsonResponse Subraces available for the race
+         */
+        Route::get('/races/{index}/subraces', [App\Http\Controllers\Dungeons\RaceController::class, 'getRaceSubraces'])
+            ->name('races.subraces');
+            
+        /**
+         * Get proficiencies available for a specific race
+         *
+         * @param  string  $index  The race identifier (e.g., 'human', 'elf')
+         * @return JsonResponse Proficiencies available for the race
+         */
+        Route::get('/races/{index}/proficiencies', [App\Http\Controllers\Dungeons\RaceController::class, 'getRaceProficiencies'])
+            ->name('races.proficiencies');
+            
+        /**
+         * Get traits available for a specific race
+         *
+         * @param  string  $index  The race identifier (e.g., 'human', 'elf')
+         * @return JsonResponse Traits available for the race
+         */
+        Route::get('/races/{index}/traits', [App\Http\Controllers\Dungeons\RaceController::class, 'getRaceTraits'])
+            ->name('races.traits');
     });

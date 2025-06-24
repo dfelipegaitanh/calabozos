@@ -20,7 +20,8 @@ app/
 │   │   ├── Api/
 │   │   │   └── AuthController.php       # Handles authentication
 │   │   └── Dungeons/
-│   │       └── ClassController.php      # Manages character classes endpoints
+│   │       ├── ClassController.php      # Manages character classes endpoints
+│   │       └── RaceController.php       # Manages character races endpoints
 │   └── Traits/
 │       ├── ApiResponse.php             # Standardizes API responses format
 │       └── LoggingTrait.php            # Standardizes logging across the application
@@ -34,7 +35,8 @@ app/
     │   ├── CalabozosApi.php            # Specific API endpoints for Calabozos
     │   └── CalabozosApiClient.php      # Base client for API communication
     └── Dungeons/
-        └── ClassService.php            # Service for managing character classes
+        ├── ClassService.php            # Service for managing character classes
+        └── RaceService.php             # Service for managing character races
 ```
 
 ## API Routes Structure
@@ -79,9 +81,20 @@ Example for a new feature (e.g., Races):
 // Group for character races endpoints
 Route::prefix('/races')
     ->group(function (): void {
-        Route::get('/', [RaceController::class, 'index']);
-        Route::get('/{index}', [RaceController::class, 'show']);
-        // Additional race-related endpoints...
+        // GET /calabozos/races - List all races
+        Route::get('/', [RaceController::class, 'getRaces']);
+        
+        // GET /calabozos/races/{index} - Get a specific race
+        Route::get('/{index}', [RaceController::class, 'getRace']);
+        
+        // GET /calabozos/races/{index}/subraces - Get available subraces
+        Route::get('/{index}/subraces', [RaceController::class, 'getRaceSubraces']);
+        
+        // GET /calabozos/races/{index}/proficiencies - Get proficiencies for a race
+        Route::get('/{index}/proficiencies', [RaceController::class, 'getRaceProficiencies']);
+        
+        // GET /calabozos/races/{index}/traits - Get traits for a race
+        Route::get('/{index}/traits', [RaceController::class, 'getRaceTraits']);
     });
 ```
 
@@ -104,6 +117,14 @@ The API provides the following endpoints:
 - `GET /api/calabozos/classes/{index}/spells` - Get spells available for a specific class
 - `GET /api/calabozos/classes/{index}/features` - Get features available for a specific class
 - `GET /api/calabozos/classes/{index}/proficiencies` - Get proficiencies available for a specific class
+
+### Character Races
+
+- `GET /api/calabozos/races` - Get all character races
+- `GET /api/calabozos/races/{index}` - Get a specific character race by index
+- `GET /api/calabozos/races/{index}/subraces` - Get subraces available for a specific race
+- `GET /api/calabozos/races/{index}/proficiencies` - Get proficiencies available for a specific race
+- `GET /api/calabozos/races/{index}/traits` - Get traits available for a specific race
 
 All endpoints except login require authentication using Laravel Sanctum.
 
