@@ -3,14 +3,12 @@
 ## 1. GENERAL PRINCIPLES
 
 - You are an expert in PHP 8.3, Laravel 12, TypeScript, ReactJs, Pest, and Tailwind.
-- All variables, methods, and classes must be named in English.
+- All code elements (variables, methods, classes) and documentation (comments, README.md) must be in English.
 - Every Controller and Component must work with its own dedicated Service.
 - Business logic must be encapsulated in Services or Actions, not in Controllers or Components.
-- All documentation, comments, and text content must be in English.
 - Follow SOLID principles and PSR-12 coding standards.
 - **IMPORTANT**: This project requires PHP 8.3 or higher. All code must be compatible with PHP 8.3 features and syntax.
-- The file README.md must be updated with any changes to the project structure or dependencies. This one must be in English and markdown format.
-- When creating new files, check the README.md file to see the current project structure and update it accordingly.
+- The README.md file must be maintained in English with markdown format and updated whenever the project structure or dependencies change.
 - The use of fields or parameters with the `mixed` type is strictly prohibited. Always use explicit and specific types.
 
 ## 2. WORKFLOW
@@ -139,6 +137,65 @@ class UserService
         $user = $this->repository->create($data);
         $this->mailService->sendWelcomeEmail($user);
         return $user;
+    }
+}
+```
+
+### 3.5 Collection Value Objects
+
+- **Purpose**: Encapsulate typed collections of specific DTOs or Value Objects to maintain domain integrity and provide context-specific operations.
+  
+- **Implementation Rules**:
+  - Must be placed in the `app/Collections` directory
+  - Must be `readonly` classes to ensure immutability
+  - Must encapsulate an instance of `Illuminate\Support\Collection`
+  - Name must follow the format: object name + Collection (e.g., [ClassCollection](cci:2://file:///Users/felipegaitan/projects/games/calabozos/app/Collections/ClassCollection.php:17:0-108:1))
+  - Must not contain complex business logic, only collection-related operations
+  - Must provide static factory methods for common conversions:
+    - [fromArray()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/DTOs/Classes/ClassCollectionDto.php:27:4-40:5): create from an array of data
+    - [fromModels()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/DTOs/Classes/ClassCollectionDto.php:42:4-55:5): create from a collection of models
+
+- **Required Methods**:
+  - Constructor that accepts a [Collection](cci:2://file:///Users/felipegaitan/projects/games/calabozos/app/Collections/ClassCollection.php:17:0-108:1) instance
+  - At least two static factory methods
+  - Utility methods like [count()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/DTOs/Classes/ClassCollectionDto.php:57:4-65:5), [isEmpty()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/Collections/ClassCollection.php:68:4-76:5), [first()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/DTOs/Classes/ClassCollectionDto.php:77:4-85:5), etc.
+  - Methods that preserve typing when operating on the collection
+
+- **Restrictions**:
+  - Must not contain persistence logic
+  - Must not directly modify collection elements
+  - Must ensure all elements are of the same type
+  - Must not have null values (except in methods like [first()](cci:1://file:///Users/felipegaitan/projects/games/calabozos/app/DTOs/Classes/ClassCollectionDto.php:77:4-85:5) where it's unavoidable)
+
+Example:
+```php
+readonly class ClassCollection
+{
+    public function __construct(
+        public Collection $items
+    ) {}
+
+    public static function fromArray(array $data): self
+    {
+        $items = collect($data)->map(function (array $itemData) {
+            return ClassDto::fromArray($itemData);
+        });
+
+        return new self(items: $items);
+    }
+    
+    public static function fromModels(Collection $models): self
+    {
+        $items = $models->map(function ($model) {
+            return ClassDto::fromModel($model);
+        });
+        
+        return new self(items: $items);
+    }
+    
+    public function count(): int
+    {
+        return $this->items->count();
     }
 }
 ```
